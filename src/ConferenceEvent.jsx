@@ -51,12 +51,28 @@ const ConferenceEvent = () => {
 
     const getItemsFromTotalCost = () => {
         const items = [];
+        venueItems.forEach((item) => {
+            if (item.quantity > 0) items.push({...item, type: "venue"});
+        });
+        avItems.forEach((item) => {
+            if (item.quantity > 0 && !items.some((i) => i.name === item.name && i.type === "av"))
+                items.push({...item, type: "av"});
+        });
+        mealsItems.forEach((item) => {
+            if(item.selected){
+                const itemForDisplay = {...item, type: "meals"};
+                if(item.numberOfPeople){
+                    itemForDisplay.numberOfPeople = numberOfPeople;
+                }
+                items.push(itemForDisplay);
+            }
+        });
+        return items;
     };
 
     const items = getItemsFromTotalCost();
 
     const ItemsDisplay = ({ items }) => {
-
     };
     const calculateTotalCost = (section) => {
         let totalCost = 0;
@@ -70,14 +86,19 @@ const ConferenceEvent = () => {
             });
         } else if (section === "meals"){
             mealsItems.forEach((item) =>{
-                if (item.selected) totalCost += itemCost "numberOfPeople";
+                if (item.selected) totalCost += itemCost * numberOfPeople;
             });
         }
         return totalCost;
       };
     const venueTotalCost = calculateTotalCost("venue");
     const avTotalCost = calculateTotalCost("av");
-    const mealsTotalCost = calculateDataCost("meals");
+    const mealsTotalCost = calculateTotalCost("meals");
+    const totalCosts = {
+        venue: venueTotalCost,
+        av: avTotalCost,
+        meals: mealsTotalCost,
+    };
 
     const navigateToProducts = (idType) => {
         if (idType == '#venue' || idType == '#addons' || idType == '#meals') {
@@ -107,7 +128,7 @@ const ConferenceEvent = () => {
                     ?
                     (
                         <div className="items-information">
-                             <div id="venue" className="venue_container container_main">
+                            <div id="venue" className="venue_container container_main">
                                 <div className="text">
                                     <h1>Venue Room Selection</h1>
                                 </div>
@@ -116,7 +137,7 @@ const ConferenceEvent = () => {
                                         <div className="venue_main" key={index}>
                                             <div className="img">
                                                 <img src={item.img} alt={item.name} />
-                                             </div>
+                                            </div>
                                             <div className="text">{item.name}</div>
                                             <div>${item.cost}</div>
                                             <div className="button_container">
@@ -219,17 +240,13 @@ const ConferenceEvent = () => {
                                 </div>
                                 <div className="total_cost">Total Cost: {mealsTotalCost}</div>
                             </div>
-                        </div>
+                    
                     ) : (
                         <div className="total_amount_detail">
-                            <TotalCost totalCosts={totalCosts} handleClick={handleToggleItems} ItemsDisplay={() => <ItemsDisplay items={items} />} />
+                            <TotalCost totalCosts={ totalCosts } ItemsDisplay={() => <ItemsDisplay items={items} />} />
                         </div>
                     )
                 }
-
-
-
-
             </div>
         </>
 
