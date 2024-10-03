@@ -22,16 +22,16 @@ const ConferenceEvent = () => {
 
     const handleAddToCart = (index) => {
         if (venueItems[index].name === "Auditorium Hall (Capacity:200)" && venueItems[index].quantity >= 3) {
-          return; 
+            return; 
         }
         dispatch(incrementQuantity(index));
-      };
+    };
     
-      const handleRemoveFromCart = (index) => {
+    const handleRemoveFromCart = (index) => {
         if (venueItems[index].quantity > 0) {
-          dispatch(decrementQuantity(index));
+            dispatch(decrementQuantity(index));
         }
-      };
+    };
     const handleIncrementAvQuantity = (index) => {
         dispatch(incrementAvQuantity(index));
     };
@@ -41,12 +41,12 @@ const ConferenceEvent = () => {
     };
 
     const handleMealSelection = (index) => {
-       const item = mealsItems[index];
-       if (item.selected && item.type == "mealForPeople"){
-        const numberOfPeople = item.selected ? numberOfPeople : 0;
-        dispatch(toggleMealSelection(index, newNumberOfPeople));
-       }
-       else dispatch(toggleMealSlive(index));
+        const item = mealsItems[index];
+        if (item.selected && item.type == "mealForPeople"){
+            const newNumberOfPeople = item.selected ? numberOfPeople : 0;
+            dispatch(toggleMealSelection(index, newNumberOfPeople));
+        }
+        else dispatch(toggleMealSelection(index));
     };
 
     const getItemsFromTotalCost = () => {
@@ -55,7 +55,8 @@ const ConferenceEvent = () => {
             if (item.quantity > 0) items.push({...item, type: "venue"});
         });
         avItems.forEach((item) => {
-            if (item.quantity > 0 && !items.some((i) => i.name === item.name && i.type === "av"))
+            if (item.quantity > 0 
+                && !items.some((i) => i.name === item.name && i.type === "av"))
                 items.push({...item, type: "av"});
         });
         mealsItems.forEach((item) => {
@@ -74,9 +75,9 @@ const ConferenceEvent = () => {
 
     const ItemsDisplay = ({ items }) => {
         console.log(items);
-        return
+        return (
         <>
-            <div className="disply_box1">
+            <div className="display_box1">
                 {items.length === 0 && <p>No items selected</p>}
                 <table className="table_item_data">
                     <thead>
@@ -108,6 +109,7 @@ const ConferenceEvent = () => {
                 </table>
             </div>
         </>
+        );
     };
     const calculateTotalCost = (section) => {
         let totalCost = 0;
@@ -125,7 +127,7 @@ const ConferenceEvent = () => {
             });
         }
         return totalCost;
-      };
+    };
     const venueTotalCost = calculateTotalCost("venue");
     const avTotalCost = calculateTotalCost("av");
     const mealsTotalCost = calculateTotalCost("meals");
@@ -269,7 +271,7 @@ const ConferenceEvent = () => {
                                                 />
                                                 <label htmlFor={`meal_${index}`}> {item.name} </label>
                                             </div>
-                                            <div className="meal_cost"> ${mealsTotalCost}</div>
+                                            <div className="meal_cost"> ${item.cost}</div>
                                         </div>
                                     ))}
                                 </div>
