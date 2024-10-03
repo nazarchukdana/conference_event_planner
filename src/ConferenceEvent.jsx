@@ -94,7 +94,7 @@ const ConferenceEvent = () => {
                                 <td>{item.name}</td>
                                 <td>${item.cost}</td>
                                 <td>
-                                    {item.type === meals || item.numberOfPeople ? 
+                                    {item.type === "meals" || item.numberOfPeople ? 
                                     ` For ${numberOfPeople} people`
                                     : item.quantity}
                                 </td>
@@ -123,7 +123,7 @@ const ConferenceEvent = () => {
             });
         } else if (section === "meals"){
             mealsItems.forEach((item) =>{
-                if (item.selected) totalCost += itemCost * numberOfPeople;
+                if (item.selected) totalCost += item.cost * numberOfPeople;
             });
         }
         return totalCost;
