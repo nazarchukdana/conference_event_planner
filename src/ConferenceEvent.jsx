@@ -118,7 +118,7 @@ const ConferenceEvent = () => {
             totalCost += item.cost * item.quantity;
           });
         } else if (section == "av"){
-            av.items.forEach((item) => {
+            avItems.forEach((item) => {
                 totalCost += item.cost * item.quantity;
             });
         } else if (section === "meals"){
@@ -262,7 +262,7 @@ const ConferenceEvent = () => {
                                 </div>
                                 </div>
                                 <div className="meal_selection">
-                                    {mealsItems.map((index, item) =>(
+                                    {mealsItems.map((item, index) =>(
                                         <div className="meal_item" key={index} style={{ padding: 15  }}>
                                             <div className="inner">
                                                 <input type="checkbox" id={ `meal_${index}`}
